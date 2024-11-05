@@ -25,11 +25,42 @@ def inverse_s_box(output):
     :return: a 4-bit integer representing the inverse S-box result
     """
     # Inverse S-box as a mapping based on the original S-box
+    inverse_s_box_binary = [
+    [0, 0, 0, 0],  # 0x0
+    [0, 0, 1, 1],  # 0x1
+    [0, 1, 1, 0],  # 0x2
+    [0, 0, 0, 1],  # 0x3
+    [1, 1, 0, 0],  # 0x4
+    [0, 0, 0, 0],  # 0x5
+    [0, 1, 1, 0],  # 0x6
+    [1, 1, 1, 0],  # 0x7
+    [1, 0, 0, 0],  # 0x8
+    [1, 0, 0, 1],  # 0x9
+    [1, 0, 1, 0],  # 0xA
+    [1, 0, 1, 1],  # 0xB
+    [1, 1, 0, 0],  # 0xC
+    [1, 1, 0, 1],  # 0xD
+    [1, 1, 1, 0],  # 0xE
+    [1, 1, 1, 1]   # 0xF
+]
+
     inverse_s_box_table = [
         0xE, 0x3, 0x6, 0x1, 0xF, 0x0, 0x8, 0xB,
         0xD, 0x7, 0x2, 0xC, 0x4, 0x9, 0xA, 0x5
     ]
-    return inverse_s_box_table[output]
+    return inverse_s_box_binary[output]
+def process_plaintext(plaintext):
+    """
+    Helper function to convert the 16-bit hexadecimal string into a list of 4 decimal integers
+
+    :param plaintext: a 16-bit hexadecimal string
+    :return: a list of 4 decimal integers
+    """
+    nibbles = [(plaintext >> (4 * i)) & 0xF for i in range(4)]
+
+    # The nibbles are in reverse order, so reverse them
+    nibbles.reverse()
+    return nibbles
 
 # Partial decryption function for the last round
 def partial_decrypt_round_5(ciphertext, subkey_guess):
